@@ -1,3 +1,4 @@
+const Mongoose = require("mongoose");
 const Message = require("../models/Message");
 const respMessage = require("../utils/respMessage");
 
@@ -12,7 +13,7 @@ exports.createMessage = async (req, res) => {
 exports.deleteMessage = async (req, res) => {
   try {
     const msg = await Message.findById(req.params.id);
-    if (req.user.userId === msg.user) {
+    if (Mongoose.Types.ObjectId(req.user.userId).toString() === msg.user.toString()) {
       const message = await Message.findByIdAndDelete(req.params.id);
       res.status(200).json(respMessage(true, message, "Message deleted"));
     }
