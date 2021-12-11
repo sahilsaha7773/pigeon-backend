@@ -12,7 +12,7 @@ exports.createUser = async (req, res) => {
 
   try {
     const savedUser = await user.save();
-    const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' },);
+    const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET, { expiresIn: '3d' },);
     res.status(200).json(respMessage(true, { ...savedUser._doc, token }, "User created"));
   } catch (error) {
     res.status(400).json(respMessage(false, error, "User not created"));
@@ -31,7 +31,7 @@ exports.loginUser = async (req, res) => {
   if (!isPasswordMatch) {
     return res.status(400).json(respMessage(false, "Password not match", "Password not match"));
   }
-  const token = jwt.sign({ userId: isUserExist._id }, process.env.JWT_SECRET, { expiresIn: '1d' },);
+  const token = jwt.sign({ userId: isUserExist._id }, process.env.JWT_SECRET, { expiresIn: '3d' },);
   res.status(200).json(respMessage(true, { user: isUserExist, token }, "Login success"));
 }
 
